@@ -1,6 +1,6 @@
-function findHighestCalories(calorieGroups) {
+function getTopCalorieAmount(calorieGroups) {
     calorieGroups = calorieGroups.split('\n\n')
-    let highestCalories = 0
+    let highestCalorieAmount = 0
 
     calorieGroups.forEach(group => {
         group = group.split('\n')
@@ -9,10 +9,27 @@ function findHighestCalories(calorieGroups) {
             return Number(total) + Number(calories)
         })
         
-        highestCalories = highestCalories < total ? total : highestCalories
+        highestCalorieAmount = highestCalorieAmount < total ? total : highestCalorieAmount
     })
 
-    return highestCalories
+    return highestCalorieAmount
 }
 
-module.exports = { findHighestCalories }
+function GetTop3CalorieGroupsTotal(calorieGroups) {
+    calorieGroups = calorieGroups.split('\n\n')
+    const totals = [0, 0, 0]
+
+    calorieGroups.forEach(group => {
+        group = group.split('\n')
+
+        const total = Number(group.reduce((total = 0, calories) => {
+            return Number(total) + Number(calories)
+        }))
+
+        totals.push(total)
+    })
+
+    return totals.sort((a, b) => b - a).slice(0, 3).reduce((a, b) => a + b)
+}
+
+module.exports = { getTopCalorieAmount, GetTop3CalorieGroupsTotal }
