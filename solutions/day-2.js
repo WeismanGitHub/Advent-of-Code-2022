@@ -8,16 +8,16 @@ function calculateScore(strategyGuide) {
     const scores = strategyGuide.trim().split('\n').map((instruction) => {
         let [enemyMove, yourMove] = instruction.toLowerCase().trim('\r').split(' ')
         enemyMove = enemyMove.charCodeAt() - 96 // convert to numeric value
-        let score = moveValues[yourMove]
+        let score = 0;
         yourMove = moveValues[yourMove]
 
-        if ( enemyMove < yourMove) {
+        if (enemyMove < yourMove) {
             score += 6
         } else if (enemyMove == yourMove) {
             score += 3
         }
 
-        return score
+        return score + yourMove
     })
 
     return scores.reduce((a, b) => a + b)
