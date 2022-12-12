@@ -27,4 +27,47 @@ function calculateScore(strategyGuide) {
     return scores.reduce((a, b) => a + b)
 }
 
-module.exports = { calculateScore }
+function chooseRightMoves(strategyGuide) {
+    const moveMatrix = {
+        Rock: { Loss: 3, Draw: 1, Win: 2 },
+        Paper: { Loss: 1, Draw: 2, Win: 3 },
+        Scissors: { Loss: 2, Draw: 3, Win: 1 }
+    }
+
+    const scores = strategyGuide.trim().split('\n').map((instruction) => {
+        let [enemyMove, yourMove] = instruction.trim('\r').split(' ')
+        let score = 0
+
+        switch (enemyMove) {
+            case 'A':
+                enemyMove = 'Rock'
+                break;
+            case 'B':
+                enemyMove = 'Paper'
+                break;
+            case 'C':
+                enemyMove = 'Scissors'
+                break;
+        }
+
+        switch (yourMove) {
+            case 'X':
+                yourMove = 'Loss'
+                break;
+            case 'Y':
+                yourMove = 'Draw'
+                score += 3
+                break;
+            case 'Z':
+                yourMove = 'Win'
+                score += 6
+                break;
+        }
+        
+        return score + moveMatrix[enemyMove][yourMove]
+    })
+
+    return scores.reduce((a, b) => a + b)
+}
+
+module.exports = { calculateScore, chooseRightMoves }
