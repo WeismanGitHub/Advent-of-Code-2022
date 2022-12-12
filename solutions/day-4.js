@@ -19,4 +19,25 @@ function getRedundantPairs(pairs) {
     return redundantPairs.length
 }
 
-module.exports ={ getRedundantPairs }
+function getPairsWithAnyRedundancy(pairs) {
+    const redundantPairs = pairs.trim().split('\n').filter(pair => {
+        const [firstRange, secondRange] = [...pair.split(',')].map(range => {
+            let [start, end] = range.split('-').map(x => Number(x))
+            const count = []
+            
+            for (start; start <= end; start++) {
+                count.push(start)
+            }
+
+            return count
+        })
+
+        const isRedundant = firstRange.some(num => secondRange.includes(num)) || secondRange.some(num => firstRange.includes(num))
+
+        return isRedundant
+    })
+
+    return redundantPairs.length
+}
+
+module.exports ={ getRedundantPairs, getPairsWithAnyRedundancy }
