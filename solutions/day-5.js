@@ -4,35 +4,46 @@ function getTopCrates(data) {
     let modeledColumns = {}
 
     splitCrates.slice(0, splitCrates.length - 1).forEach(row => {
-        row = row.replaceAll('[', '').replaceAll(']', '').replace('\r', '') // Find out how to replace array of chars.
+        const blockList = ['[', ']', ' ']
+        row = row.replace('\r', '')
+        let skip = { }
 
         for (char of row) {
-            if (char !== ' ') { // Figure out how to break loop so structure is flattened.
-                let index = row.indexOf(char) + row.replaceAll(' ', '').split(char)[0].length
-                let counter = 0;
+            if (blockList.includes(char)) {
+                continue
+            }
+            
+            let index = row.indexOf(char, (skip[char] || 0) + 1)
+            let column = 0;
+            skip[char] = index
 
-                while (index >= 3) {
-                    index -= 3
-                    counter += 1
-                }
-
-                if (modeledColumns[counter]) {
-                    modeledColumns[counter].push(char)
-                } else {
-                    modeledColumns[counter] = [char]
-                }
+            while (index >= 4) {
+                index -= 4
+                column += 1
+            }
+            
+            if (modeledColumns[column]) {
+                modeledColumns[column].push(char)
+            } else {
+                modeledColumns[column] = [char]
             }
         }
     })
 
-    return modeledColumns
-    // for (let instruction of instructions.trim().split('\n')) {
-    //     const [location, amount, destination] = instruction.match(/\d/g)
+    for (let instruction of instructions.trim().split('\n')) {
+        const [amount, location, destination] = instruction.match(/\d+/g)
 
-    //     const crate = columns[location - 1].slice(0, amount)
+        const crates = modeledColumns[location - 1].splice(0, amount)
+        modeledColumns[destination - 1].unshift(...crates)
+    }
 
-    //     console.log(crate)
-    // }
+    let topCrates = ''
+
+    for (let i = 0; i < 9; i++) {
+        topCrates += modeledColumns[i][0]
+    }
+    console.log(modeledColumns)
+    return topCrates
 }
 
 module.exports = { getTopCrates }
