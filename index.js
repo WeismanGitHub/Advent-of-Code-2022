@@ -2,10 +2,10 @@ const { getTopCalorieAmount, GetTop3CalorieGroupsTotal } = require('./solutions/
 const { calculateScore, chooseRightMoves } = require('./solutions/day-2')
 const { organizeRuckSack, getBadges } = require('./solutions/day-3')
 const { getRedundantPairs, getPairsWithAnyRedundancy } = require('./solutions/day-4')
-const { getTopCrates } = require('./solutions/day-5')
+const { getTopCrates, getTopCratesWithBetterCrane } = require('./solutions/day-5')
 const { resolve } = require('path')
 const fs = require('fs');
 
 const input = fs.readFileSync(resolve(__dirname, './inputs/day-5.txt'), 'utf8')
 
-console.log(getTopCrates(input))
+console.log(getTopCratesWithBetterCrane(input))
