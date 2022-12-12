@@ -34,15 +34,16 @@ function getTopCrates(data) {
         const [amount, location, destination] = instruction.match(/\d+/g)
 
         const crates = modeledColumns[location - 1].splice(0, amount)
-        modeledColumns[destination - 1].unshift(...crates)
+        modeledColumns[destination - 1].unshift(...crates.reverse())
+
     }
 
     let topCrates = ''
 
-    for (let i = 0; i < 9; i++) {
-        topCrates += modeledColumns[i][0]
+    for (let i = 0; i < Object.keys(modeledColumns).length; i++) {
+        topCrates += modeledColumns[i][0] || ''
     }
-    console.log(modeledColumns)
+
     return topCrates
 }
 
