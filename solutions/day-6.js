@@ -19,4 +19,25 @@ function findPacketStart(signal) {
     return packetStart
 }
 
-module.exports = { findPacketStart}
+function findMessageStart(signal) {
+    signal = signal.trim()
+    const last14Chars = []
+    let messageStart = 0;
+
+    for (let char of signal) {
+        last14Chars.push(char)
+
+        if ([...new Set(last14Chars)].length == 14) { // Check if duplicates.
+            messageStart = signal.indexOf(last14Chars.join('')) + 14
+            break
+        }
+        
+        if (last14Chars.length >= 14) {
+            last14Chars.splice(0, 1)
+        }
+    }
+
+    return messageStart
+}
+
+module.exports = { findPacketStart, findMessageStart }
